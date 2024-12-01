@@ -17,6 +17,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'regex:/^[\w\-\.]+$/i'], // i -> possible the all world small letters.
             'email' => [
                 'required',
                 'string',
@@ -25,6 +26,13 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'regex' => 'Username only contains of alphanumeric characters, dot(.), and dashes(-).',
         ];
     }
 }
